@@ -4,62 +4,62 @@
 	"mois": "2022-03",
 	"reclamations": [
 		{
-			"soin": 300,
+			"soin": 0,
 			"date": "2022-03-05",
 			"montant": "600.00$"
 		},
 		{
-			"soin": 301,
+			"soin": 0,
 			"date": "2022-03-05",
 			"montant": "600.00$"
 		},
 		{
-			"soin": 399,
+			"soin": 0,
 			"date": "2022-03-05",
 			"montant": "600.00$"
 		},
 		{
-			"soin": 400,
+			"soin": 0,
 			"date": "2022-03-13",
 			"montant": "220.50$"
 		},
 		{
-			"soin": 600,
+			"soin": 0,
 			"date": "2022-03-19",
 			"montant": "115.50$"
 		},
 		{
-			"soin": 600,
+			"soin": 0,
 			"date": "2022-03-19",
 			"montant": "115.50$"
 		},
 		{
-			"soin": 600,
+			"soin": 0,
 			"date": "2022-03-19",
 			"montant": "115.50$"
 		},
 		{
-			"soin": 600,
+			"soin": 0,
 			"date": "2022-03-19",
 			"montant": "115.50$"
 		},
 		{
-			"soin": 600,
+			"soin": 0,
 			"date": "2022-03-19",
 			"montant": "115.50$"
 		},
 		{
-			"soin": 500,
+			"soin": 0,
 			"date": "2022-03-24",
 			"montant": "85.50$"
 		},
 		{
-			"soin": 500,
+			"soin": 0,
 			"date": "2022-03-24",
 			"montant": "85.50$"
 		},
 		{
-			"soin": 500,
+			"soin": 0,
 			"date": "2022-03-24",
 			"montant": "85.50$"
 		},
