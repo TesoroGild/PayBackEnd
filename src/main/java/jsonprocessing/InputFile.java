@@ -1,7 +1,5 @@
 package jsonprocessing;
 
-
-import calcul.Dollar;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,46 +13,45 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.stream.IntStream;
 
-import exceptions.InvalidDataException;
+import exceptions.ApplicationException;
 import models.Datas;
 import models.Reclamation;
 
 
 public class InputFile {
-    public static void isJsonFile(String filePath) throws InvalidDataException {
+    public static void isJsonFile(String filePath) throws ApplicationException {
         File file = new File(filePath);
         if (!(file.exists() && file.getName().endsWith(".json")))
-            throw new InvalidDataException("Le fichier d'entré doit être de format JSON.");
+            throw new ApplicationException("Le fichier d'entré doit être de format JSON.");
     }
 
     public static Datas extractDatas(String inputFile) throws IOException {
         String jsonString = new String(Files.readAllBytes(Paths.get(inputFile)));
-        ObjectMapper cf = new ObjectMapper();
-        JsonNode node = cf.readTree(jsonString);
+        ObjectMapper om = new ObjectMapper();
+        JsonNode node = om.readTree(jsonString);
         String client = node.get("client").asText();
         String contract = node.get("contrat").asText();
         String month = node.get("mois").asText();
         JsonNode nodeReclamations = node.get("reclamations");
-        List<Reclamation> reclamations = cf.convertValue(
+        List<Reclamation> reclamations = om.convertValue(
                 nodeReclamations,
                 new TypeReference<List<Reclamation>>() {}
         );
         return new Datas(client, contract, month, reclamations);
     }
 
-    public static boolean AreDatasValid(Datas datas) throws InvalidDataException {
-        if (!isValidClientId(datas.client())) throw new InvalidDataException("Le numéro de client doit obligatoirement être composé de 6 chiffres.");
-        if (!isContractValid(datas.contract())) throw new InvalidDataException("Erreur : Le contrat doit être une des quatre lettres suivantes : A, B, C, D. La lettre doit toujours être en majuscule.");
-        if (!isMonthValid(datas.month())) throw new InvalidDataException("Erreur : Le mois est spécifié dans le champs mois sous le format AAAA-MM.");
+    public static boolean AreDatasValid(Datas datas) throws ApplicationException {
+        if (!isValidClientId(datas.client())) throw new ApplicationException("Le numéro de client doit obligatoirement être composé de 6 chiffres.");
+        if (!isContractValid(datas.contract())) throw new ApplicationException("Erreur : Le contrat doit être une des quatre lettres suivantes : A, B, C, D. La lettre doit toujours être en majuscule.");
+        if (!isMonthValid(datas.month())) throw new ApplicationException("Erreur : Le mois est spécifié dans le champs mois sous le format AAAA-MM.");
         for (Reclamation reclamation : datas.reclamations()) {
-            if (!isTreatmentValid(reclamation.healthCare())) throw new InvalidDataException("Erreur : Le numéro de soin doit être valide selon le tableau de soins.");
-            if (!isDateValid(reclamation.date())) throw new InvalidDataException("Erreur : La date de consommation de chaque soin est spécifiée sous le format ISO 8601 (AAAA-MM-JJ)");
-            if (!isDateInMonth(reclamation.date(), datas.month())) throw new InvalidDataException("Erreur : La réclamation doit être pour le mois qui est traité");
+            if (!isTreatmentValid(reclamation.healthCare())) throw new ApplicationException("Erreur : Le numéro de soin doit être valide selon le tableau de soins.");
+            if (!isDateValid(reclamation.date())) throw new ApplicationException("Erreur : La date de consommation de chaque soin est spécifiée sous le format ISO 8601 (AAAA-MM-JJ)");
+            if (!isDateInMonth(reclamation.date(), datas.month())) throw new ApplicationException("Erreur : La réclamation doit être pour le mois qui est traité");
             //Ajouter la validation des dollars?
             //Ne sert a rien si on garde extract amount
-            //if (!(Dollar.isValidAmount(reclamation.amount()))) throw new InvalidDataException("Le signe de dollar ($) est toujours présent à la fin d'un montant.");
+            //if (!(Dollar.isValidAmount(reclamation.amount()))) throw new ApplicationException("Le signe de dollar ($) est toujours présent à la fin d'un montant.");
         }
         return true;
     }

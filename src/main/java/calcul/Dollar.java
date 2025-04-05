@@ -1,15 +1,15 @@
 package calcul;
 
-import exceptions.InvalidDataException;
+import exceptions.ApplicationException;
 
 public class Dollar {
     private long cent;
 
-    public Dollar (String amountInStr) throws InvalidDataException {
+    public Dollar (String amountInStr) throws ApplicationException {
         if (amountInStr == null || !isValidAmount(amountInStr))
-            throw new InvalidDataException("Le signe de dollar ($) est toujours présent à la fin d'un montant.");
+            throw new ApplicationException("Le signe de dollar ($) est toujours présent à la fin d'un montant.");
         else
-            this.cent = convertirStringToLong(amountInStr);
+            this.cent = convertStringToLong(amountInStr);
     }
 
     public long getCent () {
@@ -20,7 +20,7 @@ public class Dollar {
         this.cent = cent;
     }
 
-    public long convertirStringToLong (String chaineNum) throws InvalidDataException {
+    public long convertStringToLong (String chaineNum) throws ApplicationException {
         long montant = -1;
         if (isValidAmount(chaineNum)) {
             if (chaineNum.contains(".")) {
@@ -32,7 +32,7 @@ public class Dollar {
             }
 
         } else
-            throw new InvalidDataException("Conversion en dollar impossible");
+            throw new ApplicationException("Conversion en dollar impossible");
         return montant;
     }
 
@@ -42,17 +42,7 @@ public class Dollar {
         return amount.matches("^\\d+(\\.\\d{2})?\\$$");
     }
 
-    private long convertStringToLong (String amountInStr) {
-        String tmp = amountInStr.replace(".", "");
-        String tmp1 = tmp.replace("$", "");
-        return Long.parseLong(tmp1);
-    }
-
-    private long add () {
-        return 0;
-    }
-
-    public Dollar calculatePercentage (int multiple) throws InvalidDataException {
+    public Dollar calculatePercentage (int multiple) throws ApplicationException {
         double cents = Math.round(this.getCent() * (multiple/100.0));
         double dollar = cents / 100;
         String amountFormat = String.format("%.2f$", dollar);

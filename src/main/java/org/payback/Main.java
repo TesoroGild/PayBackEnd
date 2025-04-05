@@ -2,7 +2,7 @@ package org.payback;
 
 import calcul.Dollar;
 import calcul.Refund;
-import exceptions.InvalidDataException;
+import exceptions.ApplicationException;
 import jsonprocessing.*;
 import models.Datas;
 import models.Reclamation;
@@ -25,9 +25,10 @@ public class Main {
             Datas datas = InputFile.extractDatas(inputFile);
             //Ca a servi a quoi d'extraire les dollars?
             List<Dollar> dollarsRec = datas.extractAmounts(datas.reclamations());
-            Refund.amountRefund(datas.contract(), datas.reclamations());
-            OutputFile.refundOutput(outputFile);
-        } catch (InvalidDataException invEx) {
+            InputFile.AreDatasValid(datas);
+            List<Dollar> amountsRef = Refund.amountRefund(datas.contract(), datas.reclamations());
+            OutputFile.refundOutput(inputFile, outputFile, datas, amountsRef);
+        } catch (ApplicationException invEx) {
             OutputFile.invalidDataOutput(outputFile, invEx.getMessage());
             System.exit(1);
         } catch (Exception ex) {
