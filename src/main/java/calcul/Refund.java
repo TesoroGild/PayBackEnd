@@ -15,34 +15,88 @@ public class Refund {
         throw new ApplicationException("Contrat de soin inattendue.");
     }
 
-    private static List<Dollar> contractA(List<Reclamation> reclamations) throws ApplicationException {
-        List<Dollar> amountsRef = new ArrayList<>();
+    private static List<Dollar> contractA (List<Reclamation> reclamations) throws ApplicationException {
+        List<Dollar> amountsRefA = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
             if ("0".equals(reclamation.healthCare()) || "100".equals(reclamation.healthCare())
-                    || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRef.add(treatmentA025Percent(reclamation.amount()));
+                    || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
             if ((300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)
-                    || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRef.add(new Dollar("00.00$"));
-            if ("600".equals(reclamation.healthCare())) amountsRef.add(treatmentA040Percent(reclamation.amount()));
+                    || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRefA.add(new Dollar("00.00$"));
+            if ("600".equals(reclamation.healthCare())) amountsRefA.add(treatmentA40Percent(reclamation.amount()));
             else throw new ApplicationException("Catégorie de soin inattendue.");
         }
-        return amountsRef;
+        return amountsRefA;
     }
 
-    private static Dollar treatmentA025Percent(String amountSpent) throws ApplicationException {
+    private static List<Dollar> contractB (List<Reclamation> reclamations) throws ApplicationException {
+        List<Dollar> amountsRefB = new ArrayList<>();
+        for (Reclamation reclamation : reclamations) {
+            if ("0".equals(reclamation.healthCare())) amountsRefB.add(treatmentB50Percent40Max(reclamation.amount()));
+            if ("100".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefB.add(treatmentB50Percent50Max(reclamation.amount()));
+            if ("200".equals(reclamation.healthCare())) amountsRefB.add(treatmentB100Percent70Max(reclamation.amount()));
+            if ((300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)) amountsRefB.add(treatmentB50PercentNoMax(reclamation.amount()));
+            if ("400".equals(reclamation.healthCare())) amountsRefB.add(new Dollar("00.00$"));
+            if ("600".equals(reclamation.healthCare())) amountsRefB.add(treatmentB100PercentNoMax(reclamation.amount()));
+            if ("700".equals(reclamation.healthCare())) amountsRefB.add(treatmentB70PercentNoMax(reclamation.amount()));
+            else throw new ApplicationException("Catégorie de soin inattendue.");
+        }
+        return amountsRefB;
+    }
+
+    private static List<Dollar> contractC (List<Reclamation> reclamations) throws ApplicationException {
+        String validTreatment = "0, 100, 200, 400, 500, 600, 700";
+        List<Dollar> amountsRefC = new ArrayList<>();
+        for (Reclamation reclamation : reclamations) {
+            if (validTreatment.contains(reclamation.healthCare())
+                    || (300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399))
+                amountsRefC.add(treatmentC(reclamation.amount()));
+            else throw new ApplicationException("Catégorie de soin inattendue.");
+        }
+        return amountsRefC;
+    }
+
+    private static Dollar treatmentA25Percent(String amountSpent) throws ApplicationException {
         Dollar reclamation = new Dollar(amountSpent);
         return reclamation.calculatePercentage(25);
     }
 
-    private static Dollar treatmentA040Percent (String amountSpent) throws ApplicationException  {
+    private static Dollar treatmentA40Percent (String amountSpent) throws ApplicationException  {
         Dollar reclamation = new Dollar(amountSpent);
         return reclamation.calculatePercentage(40);
     }
 
-    private Dollar treatmentA2 (String amountSpent) throws ApplicationException  {
+    private static Dollar treatmentB50Percent40Max(String amountSpent) throws ApplicationException  {
         Dollar reclamation = new Dollar(amountSpent);
-        Dollar refund = reclamation.calculatePercentage(25);
+        Dollar refund = reclamation.calculatePercentage(50);
+        if (refund.isGreaterThan(4000)) return new Dollar("40.00$");
+        return refund;
+    }
+
+    private static Dollar treatmentB50Percent50Max(String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        Dollar refund = reclamation.calculatePercentage(50);
         if (refund.isGreaterThan(5000)) return new Dollar("50.00$");
         return refund;
+    }
+
+    private static Dollar treatmentB50PercentNoMax(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        return refund.calculatePercentage(50);
+    }
+
+    private static Dollar treatmentB70PercentNoMax(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        return refund.calculatePercentage(70);
+    }
+
+    private static Dollar treatmentB100Percent70Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(7000)) return new Dollar("70.00$");
+        return refund;
+    }
+
+    private static Dollar treatmentB100PercentNoMax(String amountSpent) throws ApplicationException  {
+        return new Dollar(amountSpent);
     }
 
     private Dollar treatmentA3 (String amountSpent) throws ApplicationException  {
@@ -91,13 +145,6 @@ public class Refund {
 
     private void contractASpeechOccupationalTherapy () throws ApplicationException  {
 
-    }
-
-    private Dollar contractAOsteopathy0 () throws ApplicationException  {
-        Dollar reclamation = new Dollar(amountSpent);
-        Dollar refund = reclamation.calculatePercentage(25);
-        if (refund.isGreaterThan(5000)) return new Dollar("50.00$");
-        return refund;
     }
 
 }
