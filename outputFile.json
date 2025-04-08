@@ -1,57 +1,71 @@
 {
-  "client" : "100323",
-  "month" : "2022-03",
-  "reclamations" : [ {
-    "soin" : "0",
-    "date" : "2022-03-05",
-    "montant" : "40.00$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-05",
-    "montant" : "40.00$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-05",
-    "montant" : "40.00$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-13",
-    "montant" : "40.00$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-19",
-    "montant" : "28.88$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-19",
-    "montant" : "28.88$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-19",
-    "montant" : "28.88$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-19",
-    "montant" : "28.88$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-19",
-    "montant" : "28.88$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-24",
-    "montant" : "21.38$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-24",
-    "montant" : "21.38$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-24",
-    "montant" : "21.38$"
-  }, {
-    "soin" : "0",
-    "date" : "2022-03-24",
-    "montant" : "21.38$"
-  } ]
+  "client": "100323",
+  "month": "2022-03",
+  "reclamations": [
+    {
+      "healthCare": "0",
+      "date": "2022-03-05",
+      "amount": "40.00$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-05",
+      "amount": "40.00$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-05",
+      "amount": "40.00$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-13",
+      "amount": "40.00$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-19",
+      "amount": "28.88$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-19",
+      "amount": "28.88$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-19",
+      "amount": "28.88$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-19",
+      "amount": "28.88$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-19",
+      "amount": "28.88$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-24",
+      "amount": "21.38$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-24",
+      "amount": "21.38$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-24",
+      "amount": "21.38$"
+    },
+    {
+      "healthCare": "0",
+      "date": "2022-03-24",
+      "amount": "21.38$"
+    }
+  ]
 }

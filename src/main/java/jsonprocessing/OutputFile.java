@@ -2,14 +2,16 @@ package jsonprocessing;
 
 import calcul.Dollar;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import models.Datas;
 import models.Reclamation;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,19 +42,16 @@ public class OutputFile {
         }
         Datas refundDatas = new Datas(datas.client(), null, datas.month(), refunds);
         ObjectMapper om = new ObjectMapper();
-        System.out.println("5");
         JsonNode root = om.readTree(jsonString);
-        System.out.println("6");
         ((ObjectNode) root).remove("contrat");
-        System.out.println("7");
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        System.out.println("8");
-        try {
-            System.out.println("9");
-            om.writerWithDefaultPrettyPrinter().writeValue(new File(outputFile), refundDatas);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonOutput = gson.toJson(refundDatas);
+        try (FileWriter fileWriter = new FileWriter(outputFile)) {
+            fileWriter.write(jsonOutput);
+            System.out.println("Le sortie a été correctement consignée dans le fichier : " + outputFile);
         } catch (IOException e) {
-            System.out.println("Erreur lors de la création du fichier des réclamations");
-            System.out.println(e.getMessage());
+            System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
         }
     }
 }
