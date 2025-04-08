@@ -9,89 +9,95 @@ import java.util.List;
 public class Refund {
     public static List<Dollar> amountRefund(String contract, List<Reclamation> reclamations) throws ApplicationException {
         if (contract.equals("A")) return contractA(reclamations);
-        /*if (contract.equals("B")) return contractB(treatmentNumber, amountSpent);
+        if (contract.equals("B")) return contractB(treatmentNumber, amountSpent);
         if (contract.equals("C")) return contractC(treatmentNumber, amountSpent);
-        if (contract.equals("D")) return contractD(treatmentNumber, amountSpent);*/
+        if (contract.equals("D")) return contractD(treatmentNumber, amountSpent);
         throw new ApplicationException("Contrat de soin inattendue.");
     }
 
     private static List<Dollar> contractA(List<Reclamation> reclamations) throws ApplicationException {
         List<Dollar> amountsRef = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
-            if ("0".equals(reclamation.healthCare())) amountsRef.add(treatmentA0(reclamation.amount()));
+            if ("0".equals(reclamation.healthCare()) || "100".equals(reclamation.healthCare())
+                    || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRef.add(treatmentA025Percent(reclamation.amount()));
+            if ((300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)
+                    || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRef.add(new Dollar("00.00$"));
+            if ("600".equals(reclamation.healthCare())) amountsRef.add(treatmentA040Percent(reclamation.amount()));
             else throw new ApplicationException("Catégorie de soin inattendue.");
         }
         return amountsRef;
-        /*if (treatmentNumber == 100) return treatmentA1(amountSpent);
-        if (treatmentNumber == 200) return treatmentA2(amountSpent);
-        if (300 <= treatmentNumber && treatmentNumber <= 399) return treatmentA3(amountSpent);
-        if (treatmentNumber == 400) return treatmentA4(amountSpent);
-        if (treatmentNumber == 500) return treatmentA5(amountSpent);
-        if (treatmentNumber == 600) return treatmentA6(amountSpent);
-        if (treatmentNumber == 700) return treatmentA7(amountSpent);*/
     }
 
-    private static Dollar treatmentA0(String amountSpent) throws ApplicationException {
+    private static Dollar treatmentA025Percent(String amountSpent) throws ApplicationException {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(25);
+    }
+
+    private static Dollar treatmentA040Percent (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(40);
+    }
+
+    private Dollar treatmentA2 (String amountSpent) throws ApplicationException  {
         Dollar reclamation = new Dollar(amountSpent);
         Dollar refund = reclamation.calculatePercentage(25);
-        if (refund.isGreaterThan(4000)) return new Dollar("40.00$");
+        if (refund.isGreaterThan(5000)) return new Dollar("50.00$");
         return refund;
     }
 
-    /*private Dollar treatmentA1 (String amountSpent) {
+    private Dollar treatmentA3 (String amountSpent) throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA2 (String amountSpent) {
+    private Dollar treatmentA4 (String amountSpent) throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA3 (String amountSpent) {
+    private Dollar treatmentA5 (String amountSpent) throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA4 (String amountSpent) {
+    private Dollar treatmentA6 (String amountSpent) throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA5 (String amountSpent) {
+    private Dollar treatmentA7 (String amountSpent) throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA6 (String amountSpent) {
+    private void contractAOsteopathy0 () throws ApplicationException  {
 
     }
 
-    private Dollar treatmentA7 (String amountSpent) {
+    private void contractAIndividualPsychology () throws ApplicationException  {
 
     }
 
-    private void contractAOsteopathy0 () {
+    private void contractADentalCare () throws ApplicationException  {
 
     }
 
-    private void contractAIndividualPsychology () {
+    private void contractANaturopathyAcupuncture () throws ApplicationException  {
 
     }
 
-    private void contractADentalCare () {
+    private void contractAChiropractic () throws ApplicationException  {
 
     }
 
-    private void contractANaturopathyAcupuncture () {
+    private void contractAPhysicalTherapy () throws ApplicationException  {
 
     }
 
-    private void contractAChiropractic () {
+    private void contractASpeechOccupationalTherapy () throws ApplicationException  {
 
     }
 
-    private void contractAPhysicalTherapy () {
-
+    private Dollar contractAOsteopathy0 () throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        Dollar refund = reclamation.calculatePercentage(25);
+        if (refund.isGreaterThan(5000)) return new Dollar("50.00$");
+        return refund;
     }
-
-    private void contractASpeechOccupationalTherapy () {
-
-    }*/
 
 }

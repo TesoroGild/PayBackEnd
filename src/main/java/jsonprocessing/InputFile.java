@@ -34,10 +34,7 @@ public class InputFile {
         String contract = node.get("contrat").asText();
         String month = node.get("mois").asText();
         JsonNode nodeReclamations = node.get("reclamations");
-        List<Reclamation> reclamations = om.convertValue(
-                nodeReclamations,
-                new TypeReference<List<Reclamation>>() {}
-        );
+        List<Reclamation> reclamations = om.convertValue(nodeReclamations, new TypeReference<List<Reclamation>>() {});
         return new Datas(client, contract, month, reclamations);
     }
 
