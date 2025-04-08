@@ -9,9 +9,9 @@ import java.util.List;
 public class Refund {
     public static List<Dollar> amountRefund(String contract, List<Reclamation> reclamations) throws ApplicationException {
         if (contract.equals("A")) return contractA(reclamations);
-        if (contract.equals("B")) return contractB(treatmentNumber, amountSpent);
-        if (contract.equals("C")) return contractC(treatmentNumber, amountSpent);
-        if (contract.equals("D")) return contractD(treatmentNumber, amountSpent);
+        if (contract.equals("B")) return contractB(reclamations);
+        if (contract.equals("C")) return contractC(reclamations);
+        if (contract.equals("D")) return contractD(reclamations);
         throw new ApplicationException("Contrat de soin inattendue.");
     }
 
@@ -118,23 +118,33 @@ public class Refund {
         return reclamation.calculatePercentage(90);
     }
 
-    private Dollar treatmentD65Max (String amountSpent) throws ApplicationException  {
-
+    private static Dollar treatmentD65Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(6500)) return new Dollar("65.00$");
+        return refund;
     }
 
-    private Dollar treatmentD75Max (String amountSpent) throws ApplicationException  {
-
+    private static Dollar treatmentD75Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(7500)) return new Dollar("75.00$");
+        return refund;
     }
 
-    private Dollar treatmentD85Max (String amountSpent) throws ApplicationException  {
-
+    private static Dollar treatmentD85Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(8500)) return new Dollar("85.00$");
+        return refund;
     }
 
-    private Dollar treatmentD90Max (String amountSpent) throws ApplicationException  {
-
+    private static Dollar treatmentD90Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(9000)) return new Dollar("90.00$");
+        return refund;
     }
 
-    private Dollar treatmentD100Max (String amountSpent) throws ApplicationException  {
-
+    private static Dollar treatmentD100Max(String amountSpent) throws ApplicationException  {
+        Dollar refund = new Dollar(amountSpent);
+        if (refund.isGreaterThan(1000)) return new Dollar("100.00$");
+        return refund;
     }
 }
