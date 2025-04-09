@@ -38,7 +38,7 @@ public class InputFile {
         return new Datas(client, contract, month, reclamations);
     }
 
-    public static boolean AreDatasValid(Datas datas) throws ApplicationException {
+    public static void ValidateDatas(Datas datas) throws ApplicationException {
         if (!isValidClientId(datas.client())) throw new ApplicationException("Le numéro de client doit obligatoirement être composé de 6 chiffres.");
         if (!isContractValid(datas.contract())) throw new ApplicationException("Erreur : Le contrat doit être une des quatre lettres suivantes : A, B, C, D. La lettre doit toujours être en majuscule.");
         if (!isMonthValid(datas.month())) throw new ApplicationException("Erreur : Le mois est spécifié dans le champs mois sous le format AAAA-MM.");
@@ -50,7 +50,6 @@ public class InputFile {
             //Ne sert a rien si on garde extract amount
             //if (!(Dollar.isValidAmount(reclamation.amount()))) throw new ApplicationException("Le signe de dollar ($) est toujours présent à la fin d'un montant.");
         }
-        return true;
     }
 
     private static boolean isValidClientId(String clientId) {

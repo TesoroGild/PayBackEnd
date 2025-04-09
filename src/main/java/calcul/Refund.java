@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Refund {
     public static List<Dollar> amountRefund(String contract, List<Reclamation> reclamations) throws ApplicationException {
-        System.out.println(contract);
         if (contract.equals("A")) return contractA(reclamations);
         if (contract.equals("B")) return contractB(reclamations);
         if (contract.equals("C")) return contractC(reclamations);
@@ -19,8 +18,6 @@ public class Refund {
     private static List<Dollar> contractA (List<Reclamation> reclamations) throws ApplicationException {
         List<Dollar> amountsRefA = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
-            System.out.println(300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399);
-            System.out.println(reclamation);
             if ("0".equals(reclamation.healthCare()) || "100".equals(reclamation.healthCare())
                     || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
             else if ((300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)

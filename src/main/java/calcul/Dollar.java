@@ -30,7 +30,6 @@ public class Dollar {
                 montant = Long.parseLong(chaineNum.substring(0,chaineNum.indexOf(","))
                         + chaineNum.substring(chaineNum.indexOf(",")+1,chaineNum.indexOf("$")));
             }
-
         } else
             throw new ApplicationException("Conversion en dollar impossible");
         return montant;

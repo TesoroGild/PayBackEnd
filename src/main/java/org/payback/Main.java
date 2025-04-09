@@ -5,9 +5,7 @@ import calcul.Refund;
 import exceptions.ApplicationException;
 import jsonprocessing.*;
 import models.Datas;
-import models.Reclamation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -23,9 +21,9 @@ public class Main {
         try {
             InputFile.isJsonFile(inputFile);
             Datas datas = InputFile.extractDatas(inputFile);
-            //Ca a servi a quoi d'extraire les dollars?
-            List<Dollar> dollarsRec = datas.extractAmounts(datas.reclamations());
-            InputFile.AreDatasValid(datas);
+            /*Ca a servi a quoi d'extraire les dollars?*/
+            //List<Dollar> dollarsRec = datas.extractAmounts(datas.reclamations());
+            InputFile.ValidateDatas(datas);
             List<Dollar> amountsRef = Refund.amountRefund(datas.contract(), datas.reclamations());
             OutputFile.refundOutput(inputFile, outputFile, datas, amountsRef);
         } catch (ApplicationException invEx) {
