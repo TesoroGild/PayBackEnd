@@ -40,7 +40,7 @@ public class OutputFile {
             refunds.add(new Reclamation(reclamation.healthCare(), reclamation.date(), amountsRef.get(i).toString()));
             i++;
         }
-        Datas refundDatas = new Datas(datas.client(), null, datas.month(), refunds);
+        Datas refundDatas = new Datas(datas.directory(), datas.month(), refunds);
         ObjectMapper om = new ObjectMapper();
         JsonNode root = om.readTree(jsonString);
         ((ObjectNode) root).remove("contrat");

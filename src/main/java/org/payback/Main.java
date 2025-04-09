@@ -23,8 +23,8 @@ public class Main {
             Datas datas = InputFile.extractDatas(inputFile);
             /*Ca a servi a quoi d'extraire les dollars?*/
             //List<Dollar> dollarsRec = datas.extractAmounts(datas.reclamations());
-            InputFile.ValidateDatas(datas);
-            List<Dollar> amountsRef = Refund.amountRefund(datas.contract(), datas.reclamations());
+            InputFile.validateDatas(datas);
+            List<Dollar> amountsRef = Refund.amountRefund(datas.directory(), datas.reclamations());
             OutputFile.refundOutput(inputFile, outputFile, datas, amountsRef);
         } catch (ApplicationException invEx) {
             OutputFile.invalidDataOutput(outputFile, invEx.getMessage());
