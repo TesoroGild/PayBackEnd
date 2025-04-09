@@ -26,15 +26,22 @@ public class InputFile {
             throw new ApplicationException("Le fichier d'entré doit être de format JSON.");
     }
 
-    public static Datas extractDatas(String inputFile) throws IOException {
+    public static Datas extractAndValidateFields(String inputFile) throws IOException, ApplicationException {
         String jsonString = new String(Files.readAllBytes(Paths.get(inputFile)));
         ObjectMapper om = new ObjectMapper();
         JsonNode node = om.readTree(jsonString);
         String directory = node.get("client").asText();
-        //String contract = node.get("contrat").asText();
+        if (directory == null) throw new ApplicationException("Le champ dossier est manquant.");
         String month = node.get("mois").asText();
+        if (month == null) throw new ApplicationException("Le champ mois est manquant.");
         JsonNode nodeReclamations = node.get("reclamations");
+        if (nodeReclamations == null) throw new ApplicationException("Le champ réclamation est manquant.");
         List<Reclamation> reclamations = om.convertValue(nodeReclamations, new TypeReference<List<Reclamation>>() {});
+        for (Reclamation reclamation : reclamations) {
+            if (reclamation.healthCare() == null) throw new ApplicationException("Le champ soin est manquant.");
+            if (reclamation.date() == null) throw new ApplicationException("Le champ date est manquant.");
+            if (reclamation.amount() == null) throw new ApplicationException("Le champ montant est manquant.");
+        }
         return new Datas(directory, month, reclamations);
     }
 

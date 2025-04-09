@@ -20,7 +20,7 @@ public class Main {
 
         try {
             InputFile.isJsonFile(inputFile);
-            Datas datas = InputFile.extractDatas(inputFile);
+            Datas datas = InputFile.extractAndValidateFields(inputFile);
             /*Ca a servi a quoi d'extraire les dollars?*/
             //List<Dollar> dollarsRec = datas.extractAmounts(datas.reclamations());
             InputFile.validateDatas(datas);

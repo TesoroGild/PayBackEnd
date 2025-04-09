@@ -19,8 +19,9 @@ public class Refund {
     private static List<Dollar> contractA (List<Reclamation> reclamations) throws ApplicationException {
         List<Dollar> amountsRefA = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
-            if ("0".equals(reclamation.healthCare()) || "100".equals(reclamation.healthCare())
-                    || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
+            if ("0".equals(reclamation.healthCare()) || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
+            else if ("100".equals(reclamation.healthCare())) amountsRefA.add(treatmentA35Percent(reclamation.amount()));
+            else if ("175".equals(reclamation.healthCare())) amountsRefA.add(treatmentA50Percent(reclamation.amount()));
             else if ("150".equals(reclamation.healthCare()) ||(300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)
                     || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRefA.add(new Dollar("00.00$"));
             else if ("600".equals(reclamation.healthCare())) amountsRefA.add(treatmentA40Percent(reclamation.amount()));
@@ -35,9 +36,9 @@ public class Refund {
             if ("0".equals(reclamation.healthCare())) amountsRefB.add(treatmentB50Percent40Max (reclamation.amount()));
             else if ("100".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefB.add(treatmentB50Percent50Max (reclamation.amount()));
             else if ("150".equals(reclamation.healthCare()) || "400".equals(reclamation.healthCare())) amountsRefB.add(new Dollar("00.00$"));
-            else if ("200".equals(reclamation.healthCare())) amountsRefB.add(treatmentB100Percent70Max (reclamation.amount()));
+            else if ("175".equals(reclamation.healthCare())) amountsRefB.add(treatmentB75PercentNoMax (reclamation.amount()));
+            else if ("200".equals(reclamation.healthCare()) || "600".equals(reclamation.healthCare())) amountsRefB.add(treatmentB100PercentNoMax (reclamation.amount()));
             else if ((300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)) amountsRefB.add(treatmentB50PercentNoMax (reclamation.amount()));
-            else if ("600".equals(reclamation.healthCare())) amountsRefB.add(treatmentB100PercentNoMax (reclamation.amount()));
             else if ("700".equals(reclamation.healthCare())) amountsRefB.add(treatmentB70PercentNoMax (reclamation.amount()));
             else throw new ApplicationException("Numéro de soin inattendue.");
         }
@@ -45,13 +46,15 @@ public class Refund {
     }
 
     private static List<Dollar> contractC (List<Reclamation> reclamations) throws ApplicationException {
-        String validTreatment = "0, 100, 200, 400, 500, 600, 700";
+        String validTreatment = "0, 175, 200, 400, 500, 700";
         List<Dollar> amountsRefC = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
             if (validTreatment.contains(reclamation.healthCare())
                     || (300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399))
                 amountsRefC.add(treatmentC90Percent(reclamation.amount()));
+            else if ("100".equals(reclamation.healthCare())) amountsRefC.add(treatmentC95Percent(reclamation.amount()));
             else if ("150".equals(reclamation.healthCare())) amountsRefC.add(treatmentC85Percent(reclamation.amount()));
+            else if ("600".equals(reclamation.healthCare())) amountsRefC.add(treatmentC75Percent(reclamation.amount()));
             else throw new ApplicationException("Numéro de soin inattendue.");
         }
         return amountsRefC;
@@ -62,9 +65,11 @@ public class Refund {
         for (Reclamation reclamation : reclamations) {
             if ("0".equals(reclamation.healthCare())) amountsRefD.add(treatmentD85Max (reclamation.amount()));
             else if ("150".equals(reclamation.healthCare())) amountsRefD.add(treatment1005Max (reclamation.amount()));
-            else if ("100".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefD.add(treatmentD75Max (reclamation.amount()));
+            else if ("175".equals(reclamation.healthCare())) amountsRefD.add(treatmentD95PercentNoMax (reclamation.amount()));
+            else if ("100".equals(reclamation.healthCare())) amountsRefD.add(treatmentD75Max (reclamation.amount()));
             else if ("200".equals(reclamation.healthCare()) || "600".equals(reclamation.healthCare())) amountsRefD.add(treatmentD100Max (reclamation.amount()));
-            else if (300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399) amountsRefD.add(new Dollar(reclamation.amount()));
+            else if (300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399
+                    || "500".equals(reclamation.healthCare())) amountsRefD.add(new Dollar(reclamation.amount()));
             else if ("400".equals(reclamation.healthCare())) amountsRefD.add(treatmentD65Max (reclamation.amount()));
             else if ("700".equals(reclamation.healthCare())) amountsRefD.add(treatmentD90Max (reclamation.amount()));
             else throw new ApplicationException("Numéro de soin inattendue.");
@@ -77,6 +82,7 @@ public class Refund {
         for (Reclamation reclamation : reclamations) {
             if ("0".equals(reclamation.healthCare()) || "150".equals(reclamation.healthCare()) || "600".equals(reclamation.healthCare())) amountsRefE.add(treatmentE15PercentNoMax (reclamation.amount()));
             else if ("100".equals(reclamation.healthCare())) amountsRefE.add(treatmentE25PercentNoMax (reclamation.amount()));
+            else if ("175".equals(reclamation.healthCare())) amountsRefE.add(treatmentE25Percent20Max (reclamation.amount()));
             else if ("200".equals(reclamation.healthCare())) amountsRefE.add(treatmentE12PercentNoMax (reclamation.amount()));
             else if (300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399) amountsRefE.add(treatmentE60PercentNoMax (reclamation.amount()));
             else if ("400".equals(reclamation.healthCare())) amountsRefE.add(treatmentE25Percent15Max (reclamation.amount()));
@@ -92,7 +98,17 @@ public class Refund {
         return reclamation.calculatePercentage(25);
     }
 
+    private static Dollar treatmentA35Percent(String amountSpent) throws ApplicationException {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(35);
+    }
+
     private static Dollar treatmentA40Percent (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(40);
+    }
+
+    private static Dollar treatmentA50Percent (String amountSpent) throws ApplicationException  {
         Dollar reclamation = new Dollar(amountSpent);
         return reclamation.calculatePercentage(40);
     }
@@ -121,14 +137,18 @@ public class Refund {
         return reclamation.calculatePercentage(70);
     }
 
-    private static Dollar treatmentB100Percent70Max (String amountSpent) throws ApplicationException  {
-        Dollar refund = new Dollar(amountSpent);
-        if (refund.isGreaterThan(7000)) return new Dollar("70.00$");
-        return refund;
+    private static Dollar treatmentB75PercentNoMax (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(75);
     }
 
     private static Dollar treatmentB100PercentNoMax (String amountSpent) throws ApplicationException  {
         return new Dollar(amountSpent);
+    }
+
+    private static Dollar treatmentC75Percent (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(75);
     }
 
     private static Dollar treatmentC85Percent (String amountSpent) throws ApplicationException  {
@@ -139,6 +159,16 @@ public class Refund {
     private static Dollar treatmentC90Percent (String amountSpent) throws ApplicationException  {
         Dollar reclamation = new Dollar(amountSpent);
         return reclamation.calculatePercentage(90);
+    }
+
+    private static Dollar treatmentC95Percent (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(95);
+    }
+
+    private static Dollar treatmentD95PercentNoMax (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        return reclamation.calculatePercentage(95);
     }
 
     private static Dollar treatmentD65Max (String amountSpent) throws ApplicationException  {
@@ -196,6 +226,13 @@ public class Refund {
         Dollar reclamation = new Dollar(amountSpent);
         Dollar refund = reclamation.calculatePercentage(25);
         if (refund.isGreaterThan(1500)) return new Dollar("15.00$");
+        return refund;
+    }
+
+    private static Dollar treatmentE25Percent20Max (String amountSpent) throws ApplicationException  {
+        Dollar reclamation = new Dollar(amountSpent);
+        Dollar refund = reclamation.calculatePercentage(25);
+        if (refund.isGreaterThan(2000)) return new Dollar("20.00$");
         return refund;
     }
 
