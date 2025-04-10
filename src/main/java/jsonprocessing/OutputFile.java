@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import exceptions.ApplicationException;
 import models.Datas;
 import models.Reclamation;
 
@@ -32,18 +33,19 @@ public class OutputFile {
         }
     }
 
-    public static void refundOutput (String inputFile, String outputFile, Datas datas, List<Dollar> amountsRef) throws IOException {
-        String jsonString = new String(Files.readAllBytes(Paths.get(inputFile)));
+    public static void refundOutput (String outputFile, Datas datas, List<Dollar> amountsRef) throws IOException, ApplicationException {
         List<Reclamation> refunds = new ArrayList<>();
         int i = 0;
+        Dollar total = new Dollar("00.00$");
+        long tmp;
         for (Reclamation reclamation : datas.reclamations()) {
             refunds.add(new Reclamation(reclamation.healthCare(), reclamation.date(), amountsRef.get(i).toString()));
+            tmp = total.add(amountsRef.get(i));
+            total.setCent(tmp);
             i++;
         }
-        Datas refundDatas = new Datas(datas.directory(), datas.month(), refunds);
+        Datas refundDatas = new Datas(datas.directory(), datas.month(), refunds, total.toString());
         ObjectMapper om = new ObjectMapper();
-        JsonNode root = om.readTree(jsonString);
-        ((ObjectNode) root).remove("contrat");
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonOutput = gson.toJson(refundDatas);

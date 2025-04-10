@@ -38,7 +38,7 @@ public class Dollar {
     //enlever static si on ne verifie plus le dollar dans aredatavalid
     //static
     public boolean isValidAmount(String amount) {
-        return amount.matches("^\\d+(\\.\\d{2})?\\$$");
+        return amount.matches("^\\d+([.,]\\d{2})\\$$");
     }
 
     public Dollar calculatePercentage (int multiple) throws ApplicationException {
@@ -48,9 +48,13 @@ public class Dollar {
         return new Dollar(amountFormat);
     }
 
-    boolean isGreaterThan(long number) {
+    boolean isGreaterThan (long number) {
         if (this.cent > number) return true;
         return false;
+    }
+
+    public long add(Dollar amountToAdd) {
+        return this.getCent() + amountToAdd.getCent();
     }
 
     @Override

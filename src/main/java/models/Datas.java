@@ -6,7 +6,7 @@ import exceptions.ApplicationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Datas (String directory, String month, List<Reclamation> reclamations) {
+public record Datas (String directory, String month, List<Reclamation> reclamations, String total) {
     public List<Dollar> extractAmounts(List<Reclamation> reclamations) throws ApplicationException {
         List<Dollar> amounts = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {

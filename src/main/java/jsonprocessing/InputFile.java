@@ -27,22 +27,31 @@ public class InputFile {
     }
 
     public static Datas extractAndValidateFields(String inputFile) throws IOException, ApplicationException {
+        String directory;
+        String month;
+        JsonNode nodeReclamations;
         String jsonString = new String(Files.readAllBytes(Paths.get(inputFile)));
         ObjectMapper om = new ObjectMapper();
         JsonNode node = om.readTree(jsonString);
-        String directory = node.get("client").asText();
-        if (directory == null) throw new ApplicationException("Le champ dossier est manquant.");
-        String month = node.get("mois").asText();
-        if (month == null) throw new ApplicationException("Le champ mois est manquant.");
-        JsonNode nodeReclamations = node.get("reclamations");
-        if (nodeReclamations == null) throw new ApplicationException("Le champ réclamation est manquant.");
+
+        if (node.has("dossier")) directory = node.get("dossier").asText();
+        else throw new ApplicationException("Le champ dossier est manquant.");
+        if (node.has("mois")) month = node.get("mois").asText();
+        else throw new ApplicationException("Le champ mois est manquant.");
+        if (node.has("reclamations")) nodeReclamations = node.get("reclamations");
+        else throw new ApplicationException("Le champ réclamation est manquant.");
+
         List<Reclamation> reclamations = om.convertValue(nodeReclamations, new TypeReference<List<Reclamation>>() {});
+
         for (Reclamation reclamation : reclamations) {
-            if (reclamation.healthCare() == null) throw new ApplicationException("Le champ soin est manquant.");
+            if (!om.valueToTree(reclamation).has("soin")) throw new ApplicationException("Le champ soin est manquant.");
+            if (!om.valueToTree(reclamation).has("date")) throw new ApplicationException("Le champ date est manquant.");
+            if (!om.valueToTree(reclamation).has("montant")) throw new ApplicationException("Le champ montant est manquant.");
+            /*if (reclamation.healthCare() == null) throw new ApplicationException("Le champ soin est manquant.");
             if (reclamation.date() == null) throw new ApplicationException("Le champ date est manquant.");
-            if (reclamation.amount() == null) throw new ApplicationException("Le champ montant est manquant.");
+            if (reclamation.amount() == null) throw new ApplicationException("Le champ montant est manquant.");*/
         }
-        return new Datas(directory, month, reclamations);
+        return new Datas(directory, month, reclamations, "00.00$");
     }
 
     public static void validateDatas(Datas datas) throws ApplicationException {
