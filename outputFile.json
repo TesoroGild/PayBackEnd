@@ -3,29 +3,14 @@
   "month": "2022-03",
   "reclamations": [
     {
-      "healthCare": "175",
-      "date": "2022-03-05",
-      "amount": "97.50$"
-    },
-    {
-      "healthCare": "175",
-      "date": "2022-03-05",
-      "amount": "97.50$"
-    },
-    {
-      "healthCare": "175",
-      "date": "2022-03-05",
-      "amount": "5.00$"
-    },
-    {
-      "healthCare": "175",
-      "date": "2022-03-13",
-      "amount": "0.00$"
-    },
-    {
-      "healthCare": "0",
+      "healthCare": "100",
       "date": "2022-03-19",
-      "amount": "40.00$"
+      "amount": "50.00$"
+    },
+    {
+      "healthCare": "100",
+      "date": "2022-03-19",
+      "amount": "45.00$"
     },
     {
       "healthCare": "100",
@@ -33,45 +18,25 @@
       "amount": "50.00$"
     },
     {
-      "healthCare": "200",
-      "date": "2022-03-19",
-      "amount": "115.50$"
-    },
-    {
-      "healthCare": "500",
+      "healthCare": "100",
       "date": "2022-03-19",
       "amount": "50.00$"
     },
     {
-      "healthCare": "600",
+      "healthCare": "100",
       "date": "2022-03-19",
-      "amount": "115.50$"
+      "amount": "50.00$"
     },
     {
-      "healthCare": "600",
-      "date": "2022-03-24",
-      "amount": "85.50$"
+      "healthCare": "100",
+      "date": "2022-03-19",
+      "amount": "5.00$"
     },
     {
-      "healthCare": "600",
-      "date": "2022-03-24",
-      "amount": "85.50$"
-    },
-    {
-      "healthCare": "500",
-      "date": "2022-03-24",
-      "amount": "42.75$"
-    },
-    {
-      "healthCare": "500",
-      "date": "2022-03-24",
-      "amount": "42.75$"
-    },
-    {
-      "healthCare": "700",
-      "date": "2022-03-24",
-      "amount": "70.00$"
+      "healthCare": "100",
+      "date": "2022-03-19",
+      "amount": "0.00$"
     }
   ],
-  "total": "897.50$"
+  "total": "250.00$"
 }
