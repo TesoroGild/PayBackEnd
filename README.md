@@ -8,5 +8,5 @@ Le programme devra prendre le fichier d'entrée comme argument lors de l'exécut
 java -jar Refund.jar inputfile.json refunds.json
 ```
 
-# # Règles
+## Règles
 Il existe 4 types de contrat différents : A, B, C, D.
