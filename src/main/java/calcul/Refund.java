@@ -23,7 +23,7 @@ public class Refund {
         List<Dollar> amountsRefA = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
             if ("0".equals(reclamation.healthCare())) {
-                Dollar val = addValueTreatmentA25Percent(testRefA, reclamation.healthCare(), reclamation.amount());
+                Dollar val = addValueTreatmentA25Percent(reclamation.amount());
                 amountsRefA.add(val);
             } else if ("100".equals(reclamation.healthCare())) {
                 Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 25000, 35);
@@ -35,8 +35,6 @@ public class Refund {
                 Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 20000, 50);
                 testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
                 amountsRefA.add((Dollar) val[0]);
-                //Dollar val = addValueTreatmentA50Percent(testRefA, reclamation.healthCare(), reclamation.amount());
-                //testRefA.put(reclamation.healthCare(), val);
             } else if ("200".equals(reclamation.healthCare())) {
                 Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 25000, 35);
                 testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
@@ -51,21 +49,7 @@ public class Refund {
                 amountsRefA.add((Dollar) val[0]);
             } else throw new ApplicationException("Numéro de soin inattendue.");
         }
-        //Retourner le list Dollar avec les reductions trouvees et les limites max des montants
-        //Je crois
         return amountsRefA;
-
-        /*List<Dollar> amountsRefA = new ArrayList<>();
-        for (Reclamation reclamation : reclamations) {
-            if ("0".equals(reclamation.healthCare()) || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
-            else if ("100".equals(reclamation.healthCare())) amountsRefA.add(treatmentA35Percent(reclamation.amount()));
-            else if ("175".equals(reclamation.healthCare())) amountsRefA.add(treatmentA50Percent(reclamation.amount()));
-            else if ("150".equals(reclamation.healthCare()) ||(300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)
-                    || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRefA.add(new Dollar("00.00$"));
-            else if ("600".equals(reclamation.healthCare())) amountsRefA.add(treatmentA40Percent(reclamation.amount()));
-            else throw new ApplicationException("Numéro de soin inattendue.");
-        }
-        return amountsRefA;*/
     }
 
     private static List<Dollar> contractB (List<Reclamation> reclamations) throws ApplicationException {
@@ -131,24 +115,20 @@ public class Refund {
         return amountsRefE;
     }
 
-    private static Dollar addValueTreatmentA25Percent(Map<String, Dollar> testRef, String healthCare, String amount) throws ApplicationException {
-        //long tmp;
-        //Dollar reclamation = testRef.getOrDefault(healthCare, new Dollar("00.00$"));
+    private static Dollar addValueTreatmentA25Percent(String amount) throws ApplicationException {
         Dollar newAmount = new Dollar(amount);
         return newAmount.calculatePercentage(25);
-        //reclamation.setCent(tmp);
-        //return reclamation;
     }
 
     private static Object[] addValueTreatmentAPercentTtMax(Map<String, Dollar> testRef, String healthCare, String amount, long max, int percent) throws ApplicationException {
         long tmp;
         Dollar maxReclamation = testRef.getOrDefault(healthCare, new Dollar("00.00$"));
-        Dollar newAmount = new Dollar(amount);
-        tmp = maxReclamation.add(newAmount.calculatePercentage(percent));
+        Dollar prevAmount = new Dollar(amount);
+        Dollar newAmount = prevAmount.calculatePercentage(percent);
+        tmp = maxReclamation.add(newAmount);
         if (tmp >= max) {
             newAmount.setCent(max - maxReclamation.getCent());
             maxReclamation.setCent(max);
-
         } else maxReclamation.setCent(tmp);
         return new Object[] { newAmount, maxReclamation};
     }

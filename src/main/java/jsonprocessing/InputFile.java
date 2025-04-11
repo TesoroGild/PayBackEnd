@@ -96,7 +96,7 @@ public class InputFile {
     }
 
     public static boolean isTreatmentValid(String treatmentNumber) {
-        String validTreatment = "0, 100, 150, 200, 400, 500, 600, 700";
+        String validTreatment = "0, 100, 150, 175, 200, 400, 500, 600, 700";
         if (validTreatment.contains(treatmentNumber)) return true;
         else {
             int intTreatmentNumber = Integer.parseInt(treatmentNumber);
