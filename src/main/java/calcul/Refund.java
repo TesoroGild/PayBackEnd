@@ -4,7 +4,9 @@ import exceptions.ApplicationException;
 import models.Reclamation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Refund {
     public static List<Dollar> amountRefund(String contract, List<Reclamation> reclamations) throws ApplicationException {
@@ -17,7 +19,43 @@ public class Refund {
     }
 
     private static List<Dollar> contractA (List<Reclamation> reclamations) throws ApplicationException {
+        Map<String, Dollar> testRefA = new HashMap<>();
         List<Dollar> amountsRefA = new ArrayList<>();
+        for (Reclamation reclamation : reclamations) {
+            if ("0".equals(reclamation.healthCare())) {
+                Dollar val = addValueTreatmentA25Percent(testRefA, reclamation.healthCare(), reclamation.amount());
+                amountsRefA.add(val);
+            } else if ("100".equals(reclamation.healthCare())) {
+                Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 25000, 35);
+                testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
+                amountsRefA.add((Dollar) val[0]);
+            } else if ("150".equals(reclamation.healthCare()) ||(300 <= Integer.parseInt(reclamation.healthCare()) && Integer.parseInt(reclamation.healthCare()) <= 399)
+                    || "400".equals(reclamation.healthCare()) || "700".equals(reclamation.healthCare())) amountsRefA.add(new Dollar("00.00$"));
+            else if ("175".equals(reclamation.healthCare())) {
+                Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 20000, 50);
+                testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
+                amountsRefA.add((Dollar) val[0]);
+                //Dollar val = addValueTreatmentA50Percent(testRefA, reclamation.healthCare(), reclamation.amount());
+                //testRefA.put(reclamation.healthCare(), val);
+            } else if ("200".equals(reclamation.healthCare())) {
+                Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 25000, 35);
+                testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
+                amountsRefA.add((Dollar) val[0]);
+            } else if ("500".equals(reclamation.healthCare())) {
+                Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 15000, 25);
+                testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
+                amountsRefA.add((Dollar) val[0]);
+            } else if ("600".equals(reclamation.healthCare())) {
+                Object[] val = addValueTreatmentAPercentTtMax(testRefA, reclamation.healthCare(), reclamation.amount(), 15000, 40);
+                testRefA.put(reclamation.healthCare(), (Dollar) val[1]);
+                amountsRefA.add((Dollar) val[0]);
+            } else throw new ApplicationException("Numéro de soin inattendue.");
+        }
+        //Retourner le list Dollar avec les reductions trouvees et les limites max des montants
+        //Je crois
+        return amountsRefA;
+
+        /*List<Dollar> amountsRefA = new ArrayList<>();
         for (Reclamation reclamation : reclamations) {
             if ("0".equals(reclamation.healthCare()) || "200".equals(reclamation.healthCare()) || "500".equals(reclamation.healthCare())) amountsRefA.add(treatmentA25Percent(reclamation.amount()));
             else if ("100".equals(reclamation.healthCare())) amountsRefA.add(treatmentA35Percent(reclamation.amount()));
@@ -27,7 +65,7 @@ public class Refund {
             else if ("600".equals(reclamation.healthCare())) amountsRefA.add(treatmentA40Percent(reclamation.amount()));
             else throw new ApplicationException("Numéro de soin inattendue.");
         }
-        return amountsRefA;
+        return amountsRefA;*/
     }
 
     private static List<Dollar> contractB (List<Reclamation> reclamations) throws ApplicationException {
@@ -93,24 +131,26 @@ public class Refund {
         return amountsRefE;
     }
 
-    private static Dollar treatmentA25Percent(String amountSpent) throws ApplicationException {
-        Dollar reclamation = new Dollar(amountSpent);
-        return reclamation.calculatePercentage(25);
+    private static Dollar addValueTreatmentA25Percent(Map<String, Dollar> testRef, String healthCare, String amount) throws ApplicationException {
+        //long tmp;
+        //Dollar reclamation = testRef.getOrDefault(healthCare, new Dollar("00.00$"));
+        Dollar newAmount = new Dollar(amount);
+        return newAmount.calculatePercentage(25);
+        //reclamation.setCent(tmp);
+        //return reclamation;
     }
 
-    private static Dollar treatmentA35Percent(String amountSpent) throws ApplicationException {
-        Dollar reclamation = new Dollar(amountSpent);
-        return reclamation.calculatePercentage(35);
-    }
+    private static Object[] addValueTreatmentAPercentTtMax(Map<String, Dollar> testRef, String healthCare, String amount, long max, int percent) throws ApplicationException {
+        long tmp;
+        Dollar maxReclamation = testRef.getOrDefault(healthCare, new Dollar("00.00$"));
+        Dollar newAmount = new Dollar(amount);
+        tmp = maxReclamation.add(newAmount.calculatePercentage(percent));
+        if (tmp >= max) {
+            newAmount.setCent(max - maxReclamation.getCent());
+            maxReclamation.setCent(max);
 
-    private static Dollar treatmentA40Percent (String amountSpent) throws ApplicationException  {
-        Dollar reclamation = new Dollar(amountSpent);
-        return reclamation.calculatePercentage(40);
-    }
-
-    private static Dollar treatmentA50Percent (String amountSpent) throws ApplicationException  {
-        Dollar reclamation = new Dollar(amountSpent);
-        return reclamation.calculatePercentage(40);
+        } else maxReclamation.setCent(tmp);
+        return new Object[] { newAmount, maxReclamation};
     }
 
     private static Dollar treatmentB50Percent40Max (String amountSpent) throws ApplicationException  {
